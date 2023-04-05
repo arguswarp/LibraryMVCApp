@@ -33,4 +33,12 @@ public class BookDAO {
                 book.getAuthor(),
                 book.getAgeOfPublishment());
     }
+
+    public void update(int bookId, Book updatedBook) {
+        jdbcTemplate.update("UPDATE Book SET title=?, author=?, age_of_publishment=? WHERE  book_id=?",
+                updatedBook.getTitle(),
+                updatedBook.getAuthor(),
+                updatedBook.getAgeOfPublishment(),
+                bookId);
+    }
 }
