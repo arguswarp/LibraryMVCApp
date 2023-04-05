@@ -1,6 +1,7 @@
 package com.argus.alishevspring.controllers;
 
 import com.argus.alishevspring.dao.BookDAO;
+import com.argus.alishevspring.models.Book;
 import com.argus.alishevspring.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,5 +30,21 @@ public class BooksController {
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("book", bookDAO.show(id));
         return "books/show";
+    }
+
+    @GetMapping("/new")
+    public String newBook(@ModelAttribute("book") Book book) {
+        return "books/new";
+    }
+
+    @PostMapping
+    public String create(@ModelAttribute("book") @Valid Book book,
+                         BindingResult bindingResult) {
+//        personValidator.validate(person, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "books/new";
+        }
+        bookDAO.save(book);
+        return "redirect:/books";
     }
 }
