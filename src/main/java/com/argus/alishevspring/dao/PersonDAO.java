@@ -1,5 +1,6 @@
 package com.argus.alishevspring.dao;
 
+import com.argus.alishevspring.models.Book;
 import com.argus.alishevspring.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -50,4 +51,7 @@ public class PersonDAO {
         jdbcTemplate.update("DELETE FROM Person WHERE person_id=?", person_id);
     }
 
+    public List<Book> showBooks(int personId) {
+        return jdbcTemplate.query("SELECT * FROM Book WHERE person_id=?", new Object[]{personId}, new BeanPropertyRowMapper<>(Book.class));
+    }
 }
