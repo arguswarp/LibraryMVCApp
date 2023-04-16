@@ -6,7 +6,10 @@
 </head>
 <body>
 <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getAgeOfPublishment()}">VALUE</p>
-
+<div th:if="${reader.getFullName() != null}">
+    <p th:text="${'Current reader is: ' + reader.getFullName()}">VALUE</p>
+</div>
+<div th:unless="${reader.getFullName() != null}">Nobody has taken the book yet</div>
 <br/>
 <hr/>
 

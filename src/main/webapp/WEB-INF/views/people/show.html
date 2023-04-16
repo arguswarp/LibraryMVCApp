@@ -9,7 +9,7 @@
 <p th:text="${person.getPersonId()}">VALUE</p>
 
 <div th:if="${personBooks.isEmpty()}">Person have not taken any books yet</div>
-<div th:else>
+<div th:unless="${personBooks.isEmpty()}">
     <li th:each="book : ${personBooks}">
         <span th:text="${book.title + ', ' + book.author + ', ' + book.ageOfPublishment}">VALUE</span>
     </li>

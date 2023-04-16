@@ -41,4 +41,10 @@ public class BookDAO {
                 updatedBook.getAgeOfPublishment(),
                 bookId);
     }
+
+    public Person showPerson(int bookId) {
+        return jdbcTemplate.query("SELECT Person.fullname FROM Book LEFT JOIN Person ON Person.person_id=Book.person_id WHERE Book.book_id=?", new Object[]{bookId}, new BeanPropertyRowMapper<>(Person.class))
+                .stream().findAny().orElse(null);
+    }
+
 }
