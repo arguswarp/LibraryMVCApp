@@ -13,6 +13,7 @@ import java.util.List;
 public class BookDAO {
 
     private final JdbcTemplate jdbcTemplate;
+
     @Autowired
     public BookDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -42,6 +43,10 @@ public class BookDAO {
                 bookId);
     }
 
+    public void delete(int bookId) {
+        jdbcTemplate.update("DELETE FROM Book  WHERE book_id=?", bookId);
+    }
+
     public Person showPerson(int bookId) {
         return jdbcTemplate.query("SELECT Person.fullname FROM Book LEFT JOIN Person ON Person.person_id=Book.person_id WHERE Book.book_id=?", new Object[]{bookId}, new BeanPropertyRowMapper<>(Person.class))
                 .stream().findAny().orElse(null);
@@ -57,5 +62,4 @@ public class BookDAO {
         jdbcTemplate.update("UPDATE Book SET person_id=NULL WHERE  book_id=?",
                 bookId);
     }
-
 }

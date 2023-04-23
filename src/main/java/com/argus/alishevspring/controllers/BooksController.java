@@ -70,6 +70,12 @@ public class BooksController {
         return "redirect:/books";
     }
 
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
+        bookDAO.delete(id);
+        return "redirect:/books";
+    }
+
     @PatchMapping("/{id}/release")
     public String release(@PathVariable("id") int id) {
         bookDAO.releasePerson(id);

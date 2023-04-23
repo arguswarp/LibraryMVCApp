@@ -16,7 +16,7 @@
 </div>
 
 <div th:unless="${reader.getFullName() != null}">
-    <span>Book is available. To whom assign?</span>
+    <p>Book is available. To whom assign?</p>
     <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getBookId()})}">
         <label for="person">Choose person</label>
         <select th:object="${person}" th:field="*{personId}" id="person">
