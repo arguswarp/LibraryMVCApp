@@ -47,4 +47,15 @@ public class BookDAO {
                 .stream().findAny().orElse(null);
     }
 
+    public void assignPerson(int bookId, Person person) {
+        jdbcTemplate.update("UPDATE Book SET person_id=? WHERE  book_id=?",
+                person.getPersonId(),
+                bookId);
+    }
+
+    public void releasePerson(int bookId) {
+        jdbcTemplate.update("UPDATE Book SET person_id=NULL WHERE  book_id=?",
+                bookId);
+    }
+
 }

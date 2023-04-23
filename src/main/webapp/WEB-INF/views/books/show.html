@@ -2,15 +2,30 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Человек</title>
+    <title>Book</title>
 </head>
 <body>
 <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getAgeOfPublishment()}">VALUE</p>
+
 <div th:if="${reader.getFullName() != null}">
     <p th:text="${'Current reader is: ' + reader.getFullName()}">VALUE</p>
+
+    <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getBookId()})}">
+        <input type="submit" value="Release book">
+    </form>
 </div>
-<div th:unless="${reader.getFullName() != null}">Nobody has taken the book yet</div>
-<br/>
+
+<div th:unless="${reader.getFullName() != null}">
+    <span>Book is available. To whom assign?</span>
+    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getBookId()})}">
+        <label for="person">Choose person</label>
+        <select th:object="${person}" th:field="*{personId}" id="person">
+            <option th:each="person : ${people}" th:value="${person.getPersonId()}" th:text="${person.getFullName()}"></option>
+        </select>
+        <input type="submit" value="Assign book">
+    </form>
+</div>
+
 <hr/>
 
 <form th:action="@{/books/{id}/edit(id=${book.getBookId()})}">
@@ -25,7 +40,9 @@
 
 <br/>
 
-<a href="/books">Back to books</a>
+<form action="/books">
+    <input type="submit" value="Back"/>
+</form>
 
 </body>
 </html>

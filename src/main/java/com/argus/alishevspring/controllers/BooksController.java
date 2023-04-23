@@ -1,6 +1,7 @@
 package com.argus.alishevspring.controllers;
 
 import com.argus.alishevspring.dao.BookDAO;
+import com.argus.alishevspring.dao.PersonDAO;
 import com.argus.alishevspring.models.Book;
 import com.argus.alishevspring.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import javax.validation.Valid;
 @RequestMapping("/books")
 public class BooksController {
     private final BookDAO bookDAO;
+    private final PersonDAO personDAO;
 
     @Autowired
-    public BooksController(BookDAO bookDAO) {
+    public BooksController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
 
     @GetMapping()
@@ -26,10 +29,12 @@ public class BooksController {
         model.addAttribute("books", bookDAO.index());
         return "books/index";
     }
+
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("book", bookDAO.show(id));
         model.addAttribute("reader", bookDAO.showPerson(id));
+        model.addAttribute("people", personDAO.index());
         return "books/show";
     }
 
@@ -56,12 +61,24 @@ public class BooksController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult, @PathVariable("id") int id) {
+    public String update(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult, @PathVariable("id") int bookId, Person person) {
 //        personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()) {
             return "books/edit";
         }
-        bookDAO.update(id, book);
+        bookDAO.update(bookId, book);
         return "redirect:/books";
+    }
+
+    @PatchMapping("/{id}/release")
+    public String release(@PathVariable("id") int id) {
+        bookDAO.releasePerson(id);
+        return "redirect:/books/" + id;
+    }
+
+    @PatchMapping("/{id}/assign")
+    public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person selectedPerson) {
+        bookDAO.assignPerson(id, selectedPerson);
+        return "redirect:/books/" + id;
     }
 }
