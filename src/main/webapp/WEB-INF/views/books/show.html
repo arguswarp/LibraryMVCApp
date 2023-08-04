@@ -7,14 +7,14 @@
 <body>
 <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getAgeOfPublishment()}">VALUE</p>
 
-<div th:if="${reader.getFullName() != null}">
+<div th:if="${book.getOwner() != null}">
     <p th:text="${'Current reader is: ' + reader.getFullName()}">VALUE</p>
     <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getBookId()})}">
         <input type="submit" value="Release book">
     </form>
 </div>
 
-<div th:unless="${reader.getFullName() != null}">
+<div th:unless="${book.getOwner() != null}">
     <p>Book is available. To whom assign?</p>
     <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getBookId()})}">
         <label for="person">Choose person</label>

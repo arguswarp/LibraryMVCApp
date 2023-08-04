@@ -1,19 +1,30 @@
 package com.argus.alishevspring.models;
 
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
+@Entity
+@Table(name = "book")
 public class Book {
+    @Id
+    @Column(name = "book_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookId;
+    @Column(name = "title")
     @NotEmpty(message = "Title should not be empty")
     @Size(min = 1, max = 30, message = "Title should be between 1 and 30 characters")
     private String title;
+    @Column(name = "author")
     @NotEmpty(message = "Author name should not be empty")
     @Size(min = 1, max = 30, message = "Author name should be between 1 and 30 characters")
     private String author;
+    @Column(name = "age_of_publishment")
     @Min(value = 0, message = "Age of publishment should be be greater than 0")
     private int ageOfPublishment;
+    @ManyToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id") //name - FK from Many side, refCol - PK from One side
+    private Person owner;
 
     public Book(int bookId, String title, String author, int ageOfPublishment) {
         this.bookId = bookId;
@@ -56,5 +67,13 @@ public class Book {
 
     public void setAgeOfPublishment(int ageOfPublishment) {
         this.ageOfPublishment = ageOfPublishment;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
     }
 }
