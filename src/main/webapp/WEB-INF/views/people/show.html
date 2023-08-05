@@ -14,6 +14,9 @@
     <li th:each="book : ${personBooks}">
         <a th:href="@{/books/{id}(id=${book.getBookId()})}"
            th:text="${book.title + ', ' + book.author + ', ' + book.ageOfPublishment}">book</a>
+        <form  th:method="PATCH" th:action="@{/people/{id}/release(id=${book.getBookId()})}" style="display: inline;">
+            <input type="submit" value="Release book">
+        </form>
     </li>
 </div>
 

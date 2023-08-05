@@ -2,6 +2,7 @@ package com.argus.alishevspring.controllers;
 
 import com.argus.alishevspring.dao.PersonDAO;
 import com.argus.alishevspring.models.Person;
+import com.argus.alishevspring.services.BooksService;
 import com.argus.alishevspring.services.PeopleService;
 import com.argus.alishevspring.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,15 @@ import javax.validation.Valid;
 public class PeopleController {
 
     private final PeopleService peopleService;
+
+    private final BooksService booksService;
     private final PersonDAO personDAO;
     private final PersonValidator personValidator;
 
     @Autowired
-    public PeopleController(PeopleService peopleService, PersonDAO personDAO, PersonValidator personValidator) {
+    public PeopleController(PeopleService peopleService, BooksService booksService, PersonDAO personDAO, PersonValidator personValidator) {
         this.peopleService = peopleService;
+        this.booksService = booksService;
         this.personDAO = personDAO;
         this.personValidator = personValidator;
     }
@@ -76,5 +80,12 @@ public class PeopleController {
     public String delete(@PathVariable("id") int id) {
         peopleService.delete(id);
         return "redirect:/people";
+    }
+
+    @PatchMapping("/{id}/release")
+    public String release(@PathVariable("id") int id) {
+        int personId = booksService.showPerson(id).getPersonId();
+        booksService.releasePerson(id);
+        return "redirect:/people/" + personId;
     }
 }
