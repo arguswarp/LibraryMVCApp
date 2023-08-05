@@ -8,7 +8,10 @@
 <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getAgeOfPublishment()}">VALUE</p>
 
 <div th:if="${book.getOwner() != null}">
-    <p th:text="${'Current reader is: ' + reader.getFullName()}">VALUE</p>
+    <span th:text="${'Current reader is:'}"></span>
+    <a th:href="@{/people/{id}(id=${reader.getPersonId()})}"
+       th:text="${reader.getFullName()}">user</a>
+
     <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getBookId()})}">
         <input type="submit" value="Release book">
     </form>

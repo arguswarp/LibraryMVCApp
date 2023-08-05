@@ -64,6 +64,6 @@ public class BooksService {
 
     @Transactional
     public void releasePerson(int bookId) {
-        booksRepository.findById(bookId).orElseThrow().setOwner(new Person());
+        booksRepository.findById(bookId).orElseThrow().setOwner(null);
     }
 }

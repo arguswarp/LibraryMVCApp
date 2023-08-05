@@ -12,7 +12,8 @@
     <hr/>
     <p>Books:</p>
     <li th:each="book : ${personBooks}">
-        <span th:text="${book.title + ', ' + book.author + ', ' + book.ageOfPublishment}">VALUE</span>
+        <a th:href="@{/books/{id}(id=${book.getBookId()})}"
+           th:text="${book.title + ', ' + book.author + ', ' + book.ageOfPublishment}">book</a>
     </li>
 </div>
 
