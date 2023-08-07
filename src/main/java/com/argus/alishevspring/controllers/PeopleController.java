@@ -1,6 +1,7 @@
 package com.argus.alishevspring.controllers;
 
 import com.argus.alishevspring.dao.PersonDAO;
+import com.argus.alishevspring.models.Book;
 import com.argus.alishevspring.models.Person;
 import com.argus.alishevspring.services.BooksService;
 import com.argus.alishevspring.services.PeopleService;
@@ -38,7 +39,8 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model, @ModelAttribute("book") Book book) {
+        model.addAttribute("books", booksService.index());
         model.addAttribute("person", peopleService.show(id));
         model.addAttribute("personBooks", peopleService.showBooks(id));
         return "people/show";
@@ -80,6 +82,12 @@ public class PeopleController {
     public String delete(@PathVariable("id") int id) {
         peopleService.delete(id);
         return "redirect:/people";
+    }
+
+    @PatchMapping("/{id}/assign")
+    public String assign(@PathVariable("id") int id, @ModelAttribute("book") Book selectedBook) {
+        booksService.assignPerson(selectedBook.getBookId(), peopleService.show(id));
+        return "redirect:/people/" + id;
     }
 
     @PatchMapping("/{id}/release")

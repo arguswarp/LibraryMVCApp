@@ -14,29 +14,33 @@
     <li th:each="book : ${personBooks}">
         <a th:href="@{/books/{id}(id=${book.getBookId()})}"
            th:text="${book.title + ', ' + book.author + ', ' + book.ageOfPublishment}">book</a>
-        <form  th:method="PATCH" th:action="@{/people/{id}/release(id=${book.getBookId()})}" style="display: inline;">
+        <form th:method="PATCH" th:action="@{/people/{id}/release(id=${book.getBookId()})}" style="display: inline;">
             <input type="submit" value="Release book">
         </form>
     </li>
 </div>
-
-<br/>
+<p>
+<form th:method="PATCH" th:action="@{/people/{id}/assign(id=${person.getPersonId()})}">
+    <label for="book">Choose book</label>
+    <select th:object="${book}" th:field="*{bookId}" id="book">
+        <option th:each="book : ${books}" th:value="${book.getBookId()}"
+                th:text="${book.title}">
+        </option>
+    </select>
+    <input type="submit" value="Assign book">
+</form>
+</p>
 <hr/>
 <form th:action="@{/people/{id}/edit(id=${person.getPersonId()})}">
     <input type="submit" value="Edit">
 </form>
-
 <br/>
-
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPersonId()})}">
     <input type="submit" value="Delete"/>
 </form>
-
 <br/>
-
 <form action="/people">
     <input type="submit" value="Back"/>
 </form>
-
 </body>
 </html>
