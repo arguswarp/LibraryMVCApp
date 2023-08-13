@@ -25,6 +25,9 @@ public class BooksService {
         return booksRepository.findAll();
     }
 
+    public Book find(String title) {return  booksRepository.findByTitleIgnoreCaseStartsWith(title).stream().findFirst()
+            .orElseGet(Book::new);}
+
     public Book show(int bookId) {
         return booksRepository.findById(bookId).orElse(null);
     }

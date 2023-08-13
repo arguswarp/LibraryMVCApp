@@ -93,4 +93,15 @@ public class BooksController {
         booksService.assignPerson(id, selectedPerson);
         return "redirect:/books/" + id;
     }
+
+    @GetMapping("/find")
+    public String find(@RequestParam(required = false, name = "key") String key, Model model) {
+        if (key != null) {
+            if (key.equals("")) {
+                return "books/search";
+            }
+            model.addAttribute("book", booksService.find(key));
+        }
+        return "books/search";
+    }
 }
