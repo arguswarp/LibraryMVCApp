@@ -5,6 +5,8 @@ import com.argus.alishevspring.models.Person;
 import com.argus.alishevspring.repositories.BooksRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +27,19 @@ public class BooksService {
         return booksRepository.findAll();
     }
 
-    public Book find(String title) {return  booksRepository.findByTitleIgnoreCaseStartsWith(title).stream().findFirst()
-            .orElseGet(Book::new);}
+    public Page<Book> index(Pageable pageable) {
+        return booksRepository.findAll(pageable);
+    }
+    public List<Book> indexSorted() {return  booksRepository.findByOrderByAgeOfPublishment();}
+
+    public Page<Book> index(String title, Pageable pageable) {
+        return booksRepository.findByTitle(title, pageable);
+    }
+
+    public Book find(String title) {
+        return booksRepository.findByTitleIgnoreCaseStartsWith(title).stream().findFirst()
+                .orElseGet(Book::new);
+    }
 
     public Book show(int bookId) {
         return booksRepository.findById(bookId).orElse(null);

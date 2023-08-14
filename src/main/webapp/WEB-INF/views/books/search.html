@@ -6,7 +6,6 @@
 </head>
 <body>
 
-<span> </span>
 <form th:method="GET" th:action="@{/books/find}">
     <label for="searchKey">Enter search request: </label>
     <input type="text" name="key" id="searchKey"/>
@@ -20,7 +19,16 @@
     <div th:unless="${book.title == null}">
         <p>
             <a th:href="@{/books/{id}(id=${book.getBookId()})}"
-               th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getAgeOfPublishment()}">user</a>
+               th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getAgeOfPublishment()}">book</a>
+        <div th:if="${book.getOwner() != null}">
+            <span th:text="${'Current reader is:'}"></span>
+            <a th:href="@{/people/{id}(id=${book.getOwner().getPersonId()})}"
+               th:text="${book.getOwner().getFullName()}">user</a>
+        </div>
+
+        <div th:unless="${book.getOwner() != null}">
+            <p>Book is available.</p>
+        </div>
         </p>
     </div>
 </div>
