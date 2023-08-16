@@ -9,6 +9,7 @@ import com.argus.alishevspring.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +42,7 @@ public class BooksController {
                         @RequestParam(required = false, name = "sort_by_year") boolean sortByYear,
                         Model model) {
         if (page!= null && booksPerPage != null && sortByYear) {
-            Page<Book> bookPage = booksService.index(PageRequest.of(page, booksPerPage, Sort.by("age_of_publishment")));
+            Page<Book> bookPage = booksService.index(PageRequest.of(page, booksPerPage, Sort.by("ageOfPublishment")));
             model.addAttribute("totalPages", bookPage.getTotalPages());
             model.addAttribute("books", bookPage.getContent());
         } else if (page!= null && booksPerPage != null) {

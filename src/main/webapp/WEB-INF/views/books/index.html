@@ -11,6 +11,24 @@
        th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getAgeOfPublishment()}">user</a>
 </div>
 
+
+<div th:if="${totalPages > 1 && param.get('sort_by_year') != null}">
+    <p>
+        <th:block th:each="i: ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/books(page=${i}, books_per_page=${param.get('books_per_page')}, sort_by_year=${param.get('sort_by_year')})}"
+               th:text="${i}">page</a>
+        </th:block>
+    </p>
+</div>
+
+<div th:unless="${totalPages > 1 && param.get('sort_by_year') != null}">
+    <p>
+        <th:block th:each="i: ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/books(page=${i}, books_per_page=${param.get('books_per_page')})}"
+               th:text="${i}">page</a>
+        </th:block>
+    </p>
+</div>
 <br/>
 <hr/>
 
