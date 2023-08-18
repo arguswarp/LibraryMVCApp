@@ -1,6 +1,5 @@
 package com.argus.alishevspring.controllers;
 
-import com.argus.alishevspring.dao.PersonDAO;
 import com.argus.alishevspring.models.Book;
 import com.argus.alishevspring.models.Person;
 import com.argus.alishevspring.services.BooksService;
@@ -13,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/people")
@@ -21,14 +22,14 @@ public class PeopleController {
     private final PeopleService peopleService;
 
     private final BooksService booksService;
-    private final PersonDAO personDAO;
     private final PersonValidator personValidator;
 
+    private final Logger logger = Logger.getLogger("com.argus.alishevspring");
+
     @Autowired
-    public PeopleController(PeopleService peopleService, BooksService booksService, PersonDAO personDAO, PersonValidator personValidator) {
+    public PeopleController(PeopleService peopleService, BooksService booksService, PersonValidator personValidator) {
         this.peopleService = peopleService;
         this.booksService = booksService;
-        this.personDAO = personDAO;
         this.personValidator = personValidator;
     }
 

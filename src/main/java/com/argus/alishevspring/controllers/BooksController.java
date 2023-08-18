@@ -9,7 +9,6 @@ import com.argus.alishevspring.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Comparator;
 
 @Controller
 @RequestMapping("/books")
@@ -25,15 +23,11 @@ public class BooksController {
 
     private final BooksService booksService;
     private final PeopleService peopleService;
-    private final BookDAO bookDAO;
-    private final PersonDAO personDAO;
 
     @Autowired
-    public BooksController(BooksService booksService, PeopleService peopleService, BookDAO bookDAO, PersonDAO personDAO) {
+    public BooksController(BooksService booksService, PeopleService peopleService) {
         this.booksService = booksService;
         this.peopleService = peopleService;
-        this.bookDAO = bookDAO;
-        this.personDAO = personDAO;
     }
 
     @GetMapping()
@@ -41,11 +35,11 @@ public class BooksController {
                         @RequestParam(required = false, name = "books_per_page") Integer booksPerPage,
                         @RequestParam(required = false, name = "sort_by_year") boolean sortByYear,
                         Model model) {
-        if (page!= null && booksPerPage != null && sortByYear) {
+        if (page != null && booksPerPage != null && sortByYear) {
             Page<Book> bookPage = booksService.index(PageRequest.of(page, booksPerPage, Sort.by("ageOfPublishment")));
             model.addAttribute("totalPages", bookPage.getTotalPages());
             model.addAttribute("books", bookPage.getContent());
-        } else if (page!= null && booksPerPage != null) {
+        } else if (page != null && booksPerPage != null) {
             Page<Book> bookPage = booksService.index(PageRequest.of(page, booksPerPage));
             model.addAttribute("totalPages", bookPage.getTotalPages());
             model.addAttribute("books", bookPage.getContent());

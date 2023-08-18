@@ -1,6 +1,6 @@
 <html>
 <body>
-<h2>Start page</h2>
+<h2>Web Library</h2>
 <p><a href="/people">To people</a></p>
 <p><a href="/books">To books</a></p>
 <form method="get" action="/books">

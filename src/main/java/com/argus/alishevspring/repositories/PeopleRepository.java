@@ -7,16 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface PeopleRepository extends JpaRepository<Person, Integer> {
-    List<Person> findByFullName(String fullname);
 
-    List<Person> findByFullNameOrderByAgeOfBirth(String fullname);
+    Optional<Person> findByFullName(String fullname);
 
-    List<Person> findByAgeOfBirth(int ageOfBirth);
-
-    List<Person> findByFullNameStartingWith(String startingWith);
-
-    List<Person> findByFullNameOrAgeOfBirth(String fullname, int ageOfBirth);
-    Page<Person> findByFullName(String fullname, Pageable pageable);
 }

@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.Date;
+
 @Entity
 @Table(name = "book")
 public class Book {
@@ -22,8 +24,17 @@ public class Book {
     @Column(name = "age_of_publishment")
     @Min(value = 0, message = "Age of publishment should be be greater than 0")
     private int ageOfPublishment;
+
+    @Column(name = "assigned_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date assignedAt;
+
+    @Transient
+    private boolean overdue;
+
     @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "person_id") //name - FK from Many side, refCol - PK from One side
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    //name - FK from Many side, refCol - PK from One side
     private Person owner;
 
     public Book(int bookId, String title, String author, int ageOfPublishment) {
@@ -75,6 +86,22 @@ public class Book {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public Date getAssignedAt() {
+        return assignedAt;
+    }
+
+    public void setAssignedAt(Date assignedAt) {
+        this.assignedAt = assignedAt;
+    }
+
+    public boolean isOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(boolean overdue) {
+        this.overdue = overdue;
     }
 
     @Override

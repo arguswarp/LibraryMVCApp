@@ -8,13 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 public class PeopleService {
+    private static final long ASSIGN_TIME = 864000000;
     private final PeopleRepository peopleRepository;
     @Autowired
     public PeopleService(PeopleRepository peopleRepository) {
@@ -28,6 +31,8 @@ public class PeopleService {
     public Person show(int personId) {
         return peopleRepository.findById(personId).orElse(null);
     }
+
+    public Optional<Person> getPersonByFullName(String fullname) {return peopleRepository.findByFullName(fullname);}
 
     @Transactional
     public void save(Person person) {
@@ -51,6 +56,11 @@ public class PeopleService {
         if (person.isPresent()) {
             List<Book> books = person.get().getBooks();
             Hibernate.initialize(books);
+            books.forEach(book -> {
+                if (Math.abs(book.getAssignedAt().getTime() - Instant.now().toEpochMilli()) > ASSIGN_TIME) {
+                    book.setOverdue(true);
+                }
+            });
             return books;
         } else {
             return Collections.emptyList();
